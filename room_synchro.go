@@ -50,6 +50,7 @@ func CleanRelay(playerid string) {
 	conns, ok := CM.Conns[playerid]
 
 	if !ok {
+		CM.Lock.Unlock()
 		return
 	}
 
