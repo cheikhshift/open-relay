@@ -34,6 +34,33 @@ func MatchNex(cmd string) {
 		}
 	}
 
+	go PrepareClean(game)
+
+}
+
+func PrepareClean(game Game) {
+	for playerid, _ := range game.Players {
+		go CleanRelay(playerid)
+	}
+}
+
+func CleanRelay(playerid string) {
+
+	CM.Lock.Lock()
+	conns, ok := CM.Conns[playerid]
+
+	if !ok {
+		return
+	}
+
+	for _, conn := range conns {
+		if conn != nil {
+			conn.Close()
+		}
+	}
+	delete(CM.Conns, playerid)
+	CM.Lock.Unlock()
+
 }
 
 func PushStat(duration time.Duration, stattable []string, game Game, gameid string) {

@@ -33,23 +33,5 @@ func RelayConn(conn net.Conn, playerid string) {
 			counter = time.Now()
 		}
 	}
-	go CleanRelay(conn, playerid)
-}
-
-func CleanRelay(conn net.Conn, playerid string) {
-
-	if conn != nil {
-		conn.Close()
-
-	}
-	CM.Lock.Lock()
-	conns := CM.Conns[playerid]
-	for _, conn := range conns {
-		if conn != nil {
-			conn.Close()
-		}
-	}
-	delete(CM.Conns, playerid)
-	CM.Lock.Unlock()
-
+	conn.Close()
 }

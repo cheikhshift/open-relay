@@ -30,6 +30,8 @@ func main() {
 
 	}
 
+	go SaveOnExit(stop)
+
 	Sc.Lock = new(sync.Mutex)
 
 	serverAdr := fmt.Sprintf("%s:%v", *wordPtr, *numbPtr)
@@ -39,8 +41,6 @@ func main() {
 		fmt.Println("Error listening:", err.Error())
 		os.Exit(1)
 	}
-
-	
 
 	// Close the listener when the application closes.
 	defer l.Close()

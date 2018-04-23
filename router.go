@@ -32,7 +32,6 @@ func NBox(command string, conn net.Conn, playerID string) (retval string, err er
 		Matches.Lock.Unlock()
 
 		if ok {
-
 			go RelayConn(conn, cmd[2])
 		}
 		str = "OK%"
@@ -80,7 +79,10 @@ func RegisterUser(cmd []string, conn net.Conn) (str string, retval string) {
 
 func AddPlayerToGame(cmd []string, conn net.Conn) {
 	Matches.Lock.Lock()
+
 	if match, exists := Matches.Games[cmd[1]]; exists {
+
+		CheckifJoined(cmd[3], match)
 		Sc.Lock.Lock()
 		lpl := Sc.Players[cmd[3]]
 		Sc.Lock.Unlock()
@@ -89,6 +91,14 @@ func AddPlayerToGame(cmd []string, conn net.Conn) {
 	}
 
 	Matches.Lock.Unlock()
+}
+
+func CheckifJoined(playerid string, match Game) {
+	_, exists := match.Players[playerid]
+
+	if !exists {
+		go CleanRelay(playerid)
+	}
 }
 
 func RegisterStat(cmd []string) {
@@ -107,8 +117,8 @@ func MatchMake(cmd []string) (str string) {
 
 	var gameid string
 
-	str,foundGame := FindGame(cmd)
-	
+	str, foundGame := FindGame(cmd)
+
 	if !foundGame {
 		gameid, str = AddNewGame(cmd)
 		go MatchNex(gameid)
@@ -117,7 +127,7 @@ func MatchMake(cmd []string) (str string) {
 	return
 }
 
-func FindGame(cmd []string) (response string, foundGame bool){
+func FindGame(cmd []string) (response string, foundGame bool) {
 	Matches.Lock.Lock()
 	games := Matches.Games
 	Matches.Lock.Unlock()

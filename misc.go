@@ -17,7 +17,7 @@ func random(min int, max int) int {
 }
 
 func SaveOnExit(stop chan os.Signal) {
-		<-stop
-		SaveConfig(&Sc)
-		os.Exit(0)
+	<-stop
+	SaveConfig(&Sc)
+	os.Exit(0)
 }
