@@ -13,3 +13,6 @@ Open relay using delimiters to parse and execute requests. NO JSON.
     	Hostname the server should listen on. (default "localhost")
  	  -port int
     	Port number to listen on. (default 3333)
+	
+## TODO
+Document open-relay dialog format.
