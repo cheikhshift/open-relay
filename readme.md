@@ -9,7 +9,7 @@ TCP server written for [Warrior project](https://cheikhseck.itch.io/warrior-proj
 ## Building from source
 
 #### Requirements 
-- Any version of Go.
+- Any version of GO.
 
 #### Install package
 Download and install package with command : `go get github.com/cheikhshift/open-relay`
