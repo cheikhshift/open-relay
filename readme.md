@@ -1,7 +1,18 @@
 
 # Open relay
 
-TCP server written for [Warrior project](https://cheikhseck.itch.io/warrior-project).
+TCP server written for [Warrior project](https://cheikhseck.itch.io/warrior-project). Download the windows build and open it to run a WP server.
+
+## Builds
+- Windows [Download](https://github.com/cheikhshift/open-relay/raw/master/open-relay.exe)
+
+## Building from source
+
+#### Requirements 
+- Any version of Go.
+
+#### Install package
+Download and install package with command : `go get github.com/cheikhshift/open-relay`
 
 ## About
 
