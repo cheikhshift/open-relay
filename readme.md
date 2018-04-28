@@ -4,7 +4,7 @@
 TCP server written for [Warrior project](https://cheikhseck.itch.io/warrior-project). Download the windows build and open it to run a WP server.
 
 ## Builds
-- Windows [Download](https://github.com/cheikhshift/open-relay/raw/master/open-relay.exe)
+- Windows [Download](https://github.com/cheikhshift/open-relay/raw/master/open-relay.exe). Learn how to find your IP address [here](https://support.microsoft.com/en-us/help/15291/windows-find-pc-ip-address)
 
 ## Building from source
 
