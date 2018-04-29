@@ -3,8 +3,8 @@ package main
 import (
 	"net"
 	"fmt"
-	"github.com/cheikhshift/gos/core"
 	"time"
+	"crypto/rand"
 )
 
 func AddPlayerToGame(cmd []string, conn net.Conn) {
@@ -74,13 +74,47 @@ func FindGame(cmd []string) (response string, foundGame bool) {
 	return
 }
 
+
+func NewLen(length int) string {
+
+	chars := []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+	if length == 0 {
+		return ""
+	}
+	clen := len(chars)
+	if clen < 2 || clen > 256 {
+		panic("uniuri: wrong charset length for NewLenChars")
+	}
+	maxrb := 255 - (256 % clen)
+	b := make([]byte, length)
+	r := make([]byte, length+(length/4)) // storage for random bytes.
+	i := 0
+	for {
+		if _, err := rand.Read(r); err != nil {
+			panic("uniuri: error reading random bytes: " + err.Error())
+		}
+		for _, rb := range r {
+			c := int(rb)
+			if c > maxrb {
+				// Skip this number to avoid modulo bias.
+				continue
+			}
+			b[i] = chars[c%clen]
+			i++
+			if i == length {
+				return string(b)
+			}
+		}
+	}
+}
+
 func AddNewGame(cmd []string) (key string, response string) {
 	Matches.Lock.Lock()
 	expire := time.Now()
 	rint := random(0, 2)
-	maps := []string{"Level8", "Level3", "Level4"}
+	maps := []string{ "Level2", "Level8", "Level3", "Level4" }
 	nmatch := Game{Type: cmd[1], Map: maps[rint], Players: make(map[string]PlayerCell), Expires: expire}
-	key = core.NewLen(25)
+	key = NewLen(25)
 	Matches.Games[key] = nmatch
 	response = fmt.Sprintf("%s%s%s%s%s", "1", delim, key, delim, nmatch.Map)
 	Matches.Lock.Unlock()
