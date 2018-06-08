@@ -8,6 +8,15 @@ environment:
 
 stack: go 1.10
 
+branches:
+  only:
+   - master
+
+- provider: Environment
+  name: production
+  on:
+    appveyor_repo_tag: true
+
 deploy:
   release: or-v$(appveyor_build_version)
   description: 'OR binary'
