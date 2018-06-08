@@ -5,7 +5,8 @@ clone_folder: c:\gopath\src\github.com\cheikhshift\open-relay
 
 environment:
   GOPATH: c:\gopath
-
+  appveyor_repo_tag : true
+  
 stack: go 1.10
 
 branches:
@@ -23,5 +24,4 @@ deploy:
   draft: false
   prerelease: false
   on:
-    branch: master                 # release from master branch only
     appveyor_repo_tag: true        # deploy on tag push only
