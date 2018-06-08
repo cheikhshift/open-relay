@@ -1,0 +1,8 @@
+build: off
+
+clone_folder: c:\gopath\src\github.com\cheikhshift\open-relay
+
+environment:
+  GOPATH: c:\gopath
+
+stack: go 1.10
