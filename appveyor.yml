@@ -16,7 +16,7 @@ branches:
    - master
 
 artifacts:
-  - path: 'c:\gopath\bin\*.exe'
+  - path: 'bin\*.exe'
     name: binary
 
 deploy:
