@@ -7,7 +7,6 @@ install: go install github.com\cheikhshift\open-relay
 
 environment:
   GOPATH: c:\gopath
-  appveyor_repo_tag : true
   
 stack: go 1.10
 
@@ -16,7 +15,7 @@ branches:
    - master
 
 artifacts:
-  - path: 'bin\*.exe'
+  - path: '*.exe'
     name: binary
 
 deploy:
@@ -29,4 +28,5 @@ deploy:
   draft: false
   prerelease: false
   on:
+    branch : master
     appveyor_repo_tag: true        # deploy on tag push only
