@@ -8,6 +8,8 @@ TCP server written for [Warrior project](https://cheikhseck.itch.io/warrior-proj
 ## Builds
 - Windows [Download](https://github.com/cheikhshift/open-relay/releases/download/or-v1.0.35/open-relay.exe).
 
+If you have a solution for hosting this online at a global scale, please open a pull request with your email (compensated of coure.).
+
 ## Building from source
 
 #### Requirements 
