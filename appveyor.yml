@@ -8,13 +8,3 @@ environment:
 
 stack: go 1.10
 
-deploy:
-  release: open-relay-v$(appveyor_build_version)
-  description: 'Latest version'
-  artifact: /.*\.exe/            # upload all NuGet packages to release assets
-  draft: false
-  provider: GitHub
-  prerelease: false
-  on:
-    branch: master                 # release from master branch only
-    appveyor_repo_tag: true        # deploy on tag push only
