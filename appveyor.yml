@@ -3,6 +3,8 @@ version: '1.0.{build}'
 
 clone_folder: c:\gopath\src\github.com\cheikhshift\open-relay
 
+install: go install github.com\cheikhshift\open-relay
+
 environment:
   GOPATH: c:\gopath
   appveyor_repo_tag : true
@@ -20,7 +22,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: "audwfZHC0WjzZw/8QYGQBnTpTWvgqxzxwp+9xCF6dmG/24bklqWvxc3HZelaCFRL" # your encrypted token from GitHub
-  artifact: /.*\.exe/            # upload all NuGet packages to release assets
+  artifact: c:\gopath\bin\open-relay.exe            # upload all NuGet packages to release assets
   draft: false
   prerelease: false
   on:
