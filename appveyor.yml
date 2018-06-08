@@ -8,3 +8,15 @@ environment:
 
 stack: go 1.10
 
+deploy:
+  release: or-v$(appveyor_build_version)
+  description: 'OR binary'
+  provider: GitHub
+  auth_token:
+    secure: "audwfZHC0WjzZw/8QYGQBnTpTWvgqxzxwp+9xCF6dmG/24bklqWvxc3HZelaCFRL" # your encrypted token from GitHub
+  artifact: /.*\.exe/            # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
