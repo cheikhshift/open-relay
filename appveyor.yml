@@ -12,7 +12,6 @@ branches:
   only:
    - master
 
-appveyor_repo_tag: true
 
 deploy:
   release: or-v$(appveyor_build_version)
