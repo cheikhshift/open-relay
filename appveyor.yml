@@ -1,4 +1,4 @@
-build: on
+build: off
 version: '1.0.{build}'
 
 clone_folder: c:\gopath\src\github.com\cheikhshift\open-relay
