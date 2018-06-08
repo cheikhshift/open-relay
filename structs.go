@@ -36,8 +36,8 @@ type Player struct {
 }
 
 type PlayerCell struct {
-	Name, Level, Class string
-	K, D               string
-	Conn               net.Conn
-	Actions            net.Conn
+	Name, Level, Class, Team string
+	K, D                     string
+	Conn                     net.Conn
+	Actions                  net.Conn
 }

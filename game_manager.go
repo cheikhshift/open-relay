@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net"
-	"fmt"
-	"time"
 	"crypto/rand"
+	"fmt"
+	"net"
+	"time"
 )
 
 func AddPlayerToGame(cmd []string, conn net.Conn) {
@@ -21,6 +21,44 @@ func AddPlayerToGame(cmd []string, conn net.Conn) {
 	}
 
 	Matches.Lock.Unlock()
+}
+
+func AddPlayerToGameTDA(cmd []string, conn net.Conn) {
+	MatchesTDA.Lock.Lock()
+
+	if match, exists := MatchesTDA.Games[cmd[1]]; exists {
+
+		CheckifJoined(cmd[3], match)
+		Sc.Lock.Lock()
+		lpl := Sc.Players[cmd[3]]
+		Sc.Lock.Unlock()
+		var tm string
+		lt, dk := CountTeams(match.Players)
+
+		if lt <= dk {
+			tm = "L"
+		} else {
+			tm = "D"
+		}
+
+		match.Players[cmd[3]] = PlayerCell{Name: cmd[3], Level: lpl.Level, Class: lpl.Class, K: "0", D: "0", Team: tm, Conn: conn}
+		MatchesTDA.Games[cmd[1]] = match
+	}
+
+	MatchesTDA.Lock.Unlock()
+}
+
+func CountTeams(players map[string]PlayerCell) (lt int, dk int) {
+
+	for _, dta := range players {
+		if dta.Team == "L" {
+			lt++
+		} else {
+			dk++
+		}
+	}
+
+	return
 }
 
 func CheckifJoined(playerid string, match Game) {
@@ -41,6 +79,31 @@ func RegisterStat(cmd []string) {
 	game.Players[cmd[2]] = playerc
 	Matches.Games[cmd[1]] = game
 	Matches.Lock.Unlock()
+}
+
+func RegisterStatTDA(cmd []string) {
+	MatchesTDA.Lock.Lock()
+	game := MatchesTDA.Games[cmd[1]]
+
+	playerc := game.Players[cmd[2]]
+	playerc.K = cmd[3]
+	playerc.D = cmd[4]
+	game.Players[cmd[2]] = playerc
+	MatchesTDA.Games[cmd[1]] = game
+	MatchesTDA.Lock.Unlock()
+}
+
+func MatchMakeTDA(cmd []string) (str string) {
+	var gameid string
+
+	str, foundGame := FindGameTDA(cmd)
+
+	if !foundGame {
+		gameid, str = AddNewGameTDA(cmd)
+		go MatchNexTDA(gameid)
+	}
+
+	return
 }
 
 func MatchMake(cmd []string) (str string) {
@@ -74,6 +137,22 @@ func FindGame(cmd []string) (response string, foundGame bool) {
 	return
 }
 
+func FindGameTDA(cmd []string) (response string, foundGame bool) {
+	MatchesTDA.Lock.Lock()
+	games := MatchesTDA.Games
+	MatchesTDA.Lock.Unlock()
+
+	for gameid, match := range games {
+		playerlen := len(match.Players)
+
+		if match.Type == cmd[1] && playerlen < MaxPlayers {
+			response = fmt.Sprintf("%s%s%s%s%s", "1", delim, gameid, delim, match.Map)
+			foundGame = true
+		}
+	}
+
+	return
+}
 
 func NewLen(length int) string {
 
@@ -112,11 +191,24 @@ func AddNewGame(cmd []string) (key string, response string) {
 	Matches.Lock.Lock()
 	expire := time.Now()
 	rint := random(0, 2)
-	maps := []string{ "Level2", "Level8", "Level3", "Level4" }
+	maps := []string{"Level2", "Level8", "Level3", "Level4"}
 	nmatch := Game{Type: cmd[1], Map: maps[rint], Players: make(map[string]PlayerCell), Expires: expire}
 	key = NewLen(25)
 	Matches.Games[key] = nmatch
 	response = fmt.Sprintf("%s%s%s%s%s", "1", delim, key, delim, nmatch.Map)
 	Matches.Lock.Unlock()
+	return
+}
+
+func AddNewGameTDA(cmd []string) (key string, response string) {
+	MatchesTDA.Lock.Lock()
+	expire := time.Now()
+	rint := random(0, 2)
+	maps := []string{"Level2", "Level8", "Level3", "Level4"}
+	nmatch := Game{Type: cmd[1], Map: maps[rint], Players: make(map[string]PlayerCell), Expires: expire}
+	key = NewLen(25)
+	MatchesTDA.Games[key] = nmatch
+	response = fmt.Sprintf("%s%s%s%s%s", "1", delim, key, delim, nmatch.Map)
+	MatchesTDA.Lock.Unlock()
 	return
 }

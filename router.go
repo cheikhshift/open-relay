@@ -20,14 +20,31 @@ func NBox(command string, conn net.Conn, playerID string) (retval string, err er
 
 		AddPlayerToGame(cmd, conn)
 		str = "2%0"
+	case "register-joinTDA":
+
+		AddPlayerToGameTDA(cmd, conn)
+		str = "2%0"
 
 	case "register-metric":
 
 		RegisterStat(cmd)
+	case "register-metricTDA":
+
+		RegisterStatTDA(cmd)
 	case "register-action":
 		Matches.Lock.Lock()
 		_, ok := Matches.Games[cmd[1]]
 		Matches.Lock.Unlock()
+
+		if ok {
+			go RelayConn(conn, cmd[2])
+		}
+		str = "OK%"
+		retval = "disto"
+	case "register-action-tda":
+		MatchesTDA.Lock.Lock()
+		_, ok := MatchesTDA.Games[cmd[1]]
+		MatchesTDA.Lock.Unlock()
 
 		if ok {
 			go RelayConn(conn, cmd[2])
@@ -41,11 +58,12 @@ func NBox(command string, conn net.Conn, playerID string) (retval string, err er
 		CM.Conns[cmd[2]] = append(CM.Conns[cmd[2]], conn)
 		CM.Lock.Unlock()
 		retval = "noread"
-		// go Movbox(cmd, conn)
 
 	case "register-findffa":
 
 		str = MatchMake(cmd)
+	case "register-findTDA":
+		str = MatchMakeTDA(cmd)
 	default:
 	}
 
@@ -74,4 +92,3 @@ func RegisterUser(cmd []string, conn net.Conn) (str string, retval string) {
 
 	return
 }
-

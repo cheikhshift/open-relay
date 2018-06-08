@@ -14,7 +14,8 @@ const (
 )
 
 var (
-	Sc      *Nexus
-	Matches *Games   = &Games{Games: make(map[string]Game), Lock: new(sync.Mutex)}
-	CM      *ConnMap = &ConnMap{Conns: make(map[string]ConnArray), Lock: new(sync.Mutex)}
+	Sc         *Nexus
+	Matches    *Games   = &Games{Games: make(map[string]Game), Lock: new(sync.Mutex)}
+	CM         *ConnMap = &ConnMap{Conns: make(map[string]ConnArray), Lock: new(sync.Mutex)}
+	MatchesTDA *Games   = &Games{Games: make(map[string]Game), Lock: new(sync.Mutex)}
 )

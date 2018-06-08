@@ -18,7 +18,6 @@ func main() {
 	flag.Parse()
 	rand.Seed(time.Now().UnixNano())
 
-	// Listen for incoming connections.
 	stop := make(chan os.Signal, 1)
 
 	signal.Notify(stop, os.Interrupt)
@@ -44,7 +43,12 @@ func main() {
 
 	// Close the listener when the application closes.
 	defer l.Close()
-	fmt.Println("Listening on ", serverAdr)
+
+	fmt.Println("Welcome to Warrior project multiplayer server. Now open your game, tap on `configure online` and enter the following information.")
+	fmt.Println("Have fun. :)")
+	fmt.Println("IP Address :  ", GetLocalIP())
+	fmt.Println("Port : ", *numbPtr)
+
 	for {
 		// Listen for an incoming connection.
 		conn, err := l.Accept()
@@ -55,4 +59,20 @@ func main() {
 		// Handle connections in a new goroutine.
 		go handleRequest(conn)
 	}
+}
+
+func GetLocalIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return ""
+	}
+	for _, address := range addrs {
+		// check the address type and if it is not a loopback the display it
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return ""
 }
