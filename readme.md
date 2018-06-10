@@ -6,7 +6,7 @@ TCP server written for [Warrior project](https://cheikhseck.itch.io/warrior-proj
 ## It is possible to run Go on android.
 
 ## Builds
-- Windows [Download](https://github.com/cheikhshift/open-relay/releases/download/or-v1.0.35/open-relay.exe).
+- Windows [Download](https://github.com/cheikhshift/open-relay/releases/download/or-v1.0.796/open-relay.exe).
 
 If you have a solution for hosting this online at a global scale, please open a pull request with your email (compensated of coure.).
 
